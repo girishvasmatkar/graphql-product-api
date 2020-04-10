@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<graphql-api xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./dtd/graphql-api.xsd" name="productApi" query="ProductQueryType" mutation="ProductMutationType" expose="true">
+   
+    
+   <extend-object name="Party">
+      <convert-to-interface resolver-field="partyTypeId" />
+      <exclude-field name="person" />
+      <exclude-field name="organization" />
+   </extend-object>
+   <extend-object name="Person">
+      <interface name="PartyInterface" resolver-value="PERSON" />
+   </extend-object>
+   <interface-fetcher name="partyInterfaceFetcher" primary-field="partyId" resolver-field="partyTypeId" cache="true">
+      <default-fetcher>
+         <entity-fetcher entity-name="Party" cache="true" />
+      </default-fetcher>
+      <resolver-fetcher resolver-value="PERSON">
+         <entity-fetcher entity-name="Person" cache="true" />
+      </resolver-fetcher>
+   </interface-fetcher>
+   
+   
+   <!-- Extend -->
+   <extend-object name="Product">
+     <field name="availablePublicationCount" type="Int" />
+     <field name="categories" type="ProductAndCategoryAndType" is-list="true">
+         <entity-fetcher entity-name="ProductAndCategoryAndType">
+             <key-map field-name="productId" related="productId"></key-map>
+         </entity-fetcher>
+     </field>
+     <field name="identifiers" type="ProductAndGoodIdentification" is-list="true">
+         <entity-fetcher entity-name="ProductAndGoodIdentification">
+             <key-map field-name="productId" related="productId"></key-map>
+         </entity-fetcher>
+     </field>
+     <field name="features" type="ProductFeatureApplAndProductFeature" is-list="true">
+         <entity-fetcher entity-name="ProductFeatureApplAndProductFeature">
+             <key-map field-name="productId" related="productId"></key-map>
+         </entity-fetcher>
+     </field>
+   </extend-object>
+   
+   <object name="ProductQueryType">
+     <!--  <field name="products" type="Product" is-list="true">
+         <entity-fetcher entity-name="Product" />
+      </field>  -->
+      <field name="product" type="Product">
+         <argument name="productId" type="String" required="true" />
+         <entity-fetcher entity-name="Product" />
+      </field>
+      <field name="productDetail" type="Product">
+         <service-fetcher service="gql.productDetail" />
+      </field>
+       
+      <field name="categories" type="ProductCategory" is-list="true">
+         <entity-fetcher entity-name="ProductCategory" />
+      </field>
+      
+      <field name="category" type="ProductCategory">
+         <argument name="productCategoryId" type="String" required="true" />
+         <entity-fetcher entity-name="ProductCategory" />
+      </field>
+      
+      <field name="stores" type="ProductStore" is-list="true">
+         <entity-fetcher entity-name="ProductStore" />
+      </field>
+      <field name="store" type="ProductStore">
+         <argument name="productStoreId" type="String" required="true" />
+         <entity-fetcher entity-name="ProductStore" />
+      </field>
+      <field name="searchProductsByGoodIdentificationValueUsingEntity" type="ProductAndGoodIdentification" is-list="true">
+         <service-fetcher service="searchProductsByGoodIdentificationValue" />
+      </field>
+      <field name="searchProductsByGoodIdentificationValueUsingExplicitType" type="ProductSearchByGoodIdentification" is-list="true">
+         <service-fetcher service="searchProductsByGoodIdentificationValue" />
+      </field>
+      <field name="orders" type="OrderHeader" is-list="true">
+         <entity-fetcher entity-name="OrderHeader" />
+      </field>
+      <field name="order" type="OrderHeader">
+         <entity-fetcher entity-name="OrderHeader" />
+      </field>
+      <field name="party" type="PartyInterface">
+         <argument name="partyId" type="String" />
+         <interface-fetcher ref="partyInterfaceFetcher" />
+      </field>
+      <field name="parties" type="PartyInterface" is-list="true">
+         <interface-fetcher ref="partyInterfaceFetcher" />
+      </field>
+   </object>
+  
+   
+   <object name="ProductSearchByGoodIdentification">
+      <field name="internalName" type="String" />
+      <field name="productId" type="String" />
+      <field name="isVariant" type="String" />
+      <field name="idValue" type="String" />
+   </object>
+   
+   <object name="ProductMutationType">
+      <field name="createOrder" type="OrderHeader" for="mutation">
+         <service-fetcher service="gql.createOrder" />
+      </field>
+      <field name="createProduct" type="Product" for="mutation">
+         <service-fetcher service="gql.createOrder" />
+      </field>
+   </object>
+   
+</graphql-api>

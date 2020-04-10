@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+   <description>Graphql-product-api Services</description>
+   <vendor></vendor>
+   <version>1.0</version>
+   <service name="searchProductsByGoodIdentificationValue" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="searchProductsByGoodIdentificationValue" auth="true">
+      <implements service="returnConnection"/>
+      <attribute name="idFragment" type="String" mode="IN" optional="false" />
+      <attribute name="pagination" type="org.apache.ofbiz.graphql.schema.PaginationInputType" mode="IN" />
+   </service>
+   <service name="searchProductsByName" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="searchProductsByName" auth="true">
+      <description>Generates the complete XML structure around a particular product</description>
+      <attribute name="nameFragment" type="String" mode="IN" optional="false" />
+      <attribute name="products" type="java.util.ArrayList" mode="OUT" optional="true" />
+   </service>
+   <service name="gql.createProduct" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="createProduct" auth="true" >
+      <description>Generates the complete XML structure around a particular product</description>
+    <!--  <auto-attributes mode="IN" entity-name="Product" optional="true"></auto-attributes>    -->
+    <implements service="createProduct"/> 
+    <attribute name="_graphql_result_" type="GenericValue" mode="OUT" optional="true" />   
+   </service>  
+   <service name="gql.createOrder" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="createOrder" auth="true" >
+    <description>Generates the complete XML structure around a particular product</description> 
+    <implements service="storeOrder"/>
+    <override name="orderAdjustments" type="List" mode="IN" optional="false" entity-name="OrderAdjustment"/>
+    <override name="orderItems" entity-name="OrderItem" type="List" mode="IN"></override>
+   </service>
+   <service name="gql.productDetail" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="getProductDetail" auth="true" >
+    <description>Generates the complete XML structure around a particular product</description> 
+    <attribute name="id" type="String" mode="IN" optional="false" />
+    <attribute name="_graphql_result_" type="Map" mode="OUT" optional="true" />      
+   </service>    
+   
+   
+   
+   <!-- Product API Start -->
+   
+   <service name="productCreate" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="getProductDetail" auth="true" >
+    <description>Generates the complete XML structure around a particular product</description> 
+    <attribute name="id" type="String" mode="IN" optional="false" />
+    <attribute name="_graphql_result_" type="Map" mode="OUT" optional="true" />      
+   </service>   
+   
+   
+   
+</services>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This software is in the public domain under CC0 1.0 Universal plus a
+Grant of Patent License.
+
+To the extent possible under law, the author(s) have dedicated all
+copyright and related and neighboring rights to this software to the
+public domain worldwide. This software is distributed without any
+warranty.
+
+You should have received a copy of the CC0 Public Domain Dedication
+along with this software (see the LICENSE.md file). If not, see
+<http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<graphql-api xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./dtd/graphql-api.xsd" name="productApi" query="ProductQueryType" mutation="ProductMutationType" expose="true">
+   
+   <!-- Extend -->
+   <extend-object name="Product">
+     <field name="availablePublicationCount" type="Int" />
+     <field name="categories" type="ProductAndCategoryAndType" is-list="true">
+         <entity-fetcher entity-name="ProductAndCategoryAndType">
+             <key-map field-name="productId" related="productId"></key-map>
+         </entity-fetcher>
+     </field>
+     <field name="identifiers" type="ProductAndGoodIdentification" is-list="true">
+         <entity-fetcher entity-name="ProductAndGoodIdentification">
+             <key-map field-name="productId" related="productId"></key-map>
+         </entity-fetcher>
+     </field>
+     <field name="features" type="ProductFeatureApplAndProductFeature" is-list="true">
+         <entity-fetcher entity-name="ProductFeatureApplAndProductFeature">
+             <key-map field-name="productId" related="productId"></key-map>
+         </entity-fetcher>
+     </field>
+   </extend-object>
+   
+   <object name="ProductQueryType">
+   
+   <field name="product" type="Product">
+   <argument name="test" type="String"></argument>
+         <entity-fetcher entity-name="Product" />
+   </field>
+   <field name="searchProductsByGoodIdentificationValueUsingEntity" type="ProductAndGoodIdentification" is-list="true">
+         <service-fetcher service="searchProductsByGoodIdentificationValue" />
+   </field>
+   <field name="searchProductsByGoodIdentificationValueUsingExplicitType" type="ProductSearchByGoodIdentification" is-list="true">
+         <service-fetcher service="searchProductsByGoodIdentificationValue" />
+   </field> 
+   </object>
+   
+   <object name="ProductSearchByGoodIdentification">
+      <field name="internalName" type="String" />
+      <field name="productId" type="String" />
+      <field name="isVariant" type="String" />
+      <field name="idValue" type="String" />
+   </object>
+ 
+   <object name="ProductMutationType">
+      <field name="productCreate" type="Product" for="mutation">
+         <service-fetcher service="createProduct" />
+      </field>
+      <field name="productUpdate" type="Product" for="mutation">
+         <service-fetcher service="createProduct" />
+      </field>
+      <field name="productDelete" type="Product" for="mutation">
+         <service-fetcher service="createProduct" />
+      </field>
+      <field name="createProduct" type="Product" for="mutation">
+         <service-fetcher service="createProduct" />
+      </field>
+   </object>
+   
+</graphql-api>

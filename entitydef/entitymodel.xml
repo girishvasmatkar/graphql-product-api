@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of Graphql-product-api Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+    <view-entity entity-name="ProductAndGoodIdentification"
+            package-name="org.apache.ofbiz.order.order"
+            never-cache="true"
+            title="Product And GoodIdentification View Entity">
+      <member-entity entity-alias="PR" entity-name="Product"/>
+      <member-entity entity-alias="GI" entity-name="GoodIdentification"/>
+      <alias entity-alias="PR" name="productId" field="productId"/>
+      <alias entity-alias="PR" name="internalName" field="internalName"/>
+      <alias entity-alias="PR" name="productName" field="productName"/>
+      <alias entity-alias="PR" name="brandName" field="brandName"/>
+      <alias entity-alias="PR" name="primaryProductCategoryId" field="primaryProductCategoryId"/>
+      <alias entity-alias="PR" name="isVirtual" field="isVirtual"/>
+      <alias entity-alias="PR" name="isVariant" field="isVariant"/>
+      <alias entity-alias="GI" name="idValue"/>
+      <alias entity-alias="GI" name="goodIdentificationTypeId"/>
+      <view-link entity-alias="PR" rel-entity-alias="GI">
+        <key-map field-name="productId"/>
+      </view-link>
+      <relation type="many" rel-entity-name="GoodIdentification">
+        <key-map field-name="productId"/>
+      </relation>
+  </view-entity>
+  <view-entity entity-name="ProductAndCategoryAndType"
+        package-name="co.hotwax.ofbiz.product.category"
+        title="Product And ProductCategoryType view">
+        <member-entity entity-alias="PROD" entity-name="Product"/>
+        <member-entity entity-alias="PCM" entity-name="ProductCategoryMember"/>
+        <member-entity entity-alias="PC" entity-name="ProductCategory"/>
+        <alias name="productId" entity-alias="PROD"/>
+        <alias name="productCategoryId" entity-alias="PCM"/>
+        <alias name="categoryName" entity-alias="PC" field="categoryName"/>
+        <alias name="fromDate" entity-alias="PCM"/>
+        <alias name="thruDate" entity-alias="PCM"/>
+        <alias name="productCategoryTypeId" entity-alias="PC"/>
+        <view-link entity-alias="PROD" rel-entity-alias="PCM">
+            <key-map field-name="productId"/>
+        </view-link>
+        <view-link entity-alias="PCM" rel-entity-alias="PC">
+            <key-map field-name="productCategoryId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="ProductAndProductContentAndContent"
+        package-name="co.hotwax.ofbiz.product.category"
+        title="Product And ProductContent view">
+        <member-entity entity-alias="PROD" entity-name="Product"/>
+        <member-entity entity-alias="PC" entity-name="ProductContent"/>
+        <member-entity entity-alias="C" entity-name="Content"/>
+        <member-entity entity-alias="DR" entity-name="DataResource"/>
+        <alias name="productId" entity-alias="PROD"/>
+        <alias name="contentId" entity-alias="PC"/>
+        <alias name="productContentTypeId" entity-alias="PC"/>
+        <alias name="fromDate" entity-alias="PC"/>
+        <alias name="thruDate" entity-alias="PC"/>
+        <alias name="contentTypeId" entity-alias="C"/>
+        <alias name="contentName" entity-alias="C"/>
+        <alias name="dataResourceTypeId" entity-alias="DR"/>
+        <alias name="dataResourceName" entity-alias="DR"/>
+ 
+ 
+        <view-link entity-alias="PROD" rel-entity-alias="PC">
+            <key-map field-name="productId"/>
+        </view-link>
+        <view-link entity-alias="PC" rel-entity-alias="C">
+            <key-map field-name="contentId"/>
+        </view-link>
+        <view-link entity-alias="C" rel-entity-alias="DR">
+            <key-map field-name="dataResourceId"/>
+        </view-link>
+    </view-entity>
+    <view-entity entity-name="ProductFeatureApplAndProductFeature"
+        package-name="co.hotwax.ofbiz.product.feature"
+        title="ProductFeature And ProductFeatureAppl View Entity">
+        <member-entity entity-alias="PFA" entity-name="ProductFeatureAppl"/>
+        <member-entity entity-alias="PF" entity-name="ProductFeature"/>
+        <alias entity-alias="PF" name="productFeatureId"/>
+        <alias entity-alias="PF" name="abbrev"/>
+        <alias entity-alias="PF" name="productFeatureTypeId"/>
+        <alias entity-alias="PF" name="productFeatureCategoryId"/>
+        <alias entity-alias="PF" name="description"/>
+        <alias entity-alias="PFA" name="productId"/>
+        <alias entity-alias="PFA" name="productFeatureApplTypeId"/>
+        <alias entity-alias="PFA" name="fromDate"/>
+        <alias entity-alias="PFA" name="thruDate"/>
+        <view-link entity-alias="PF" rel-entity-alias="PFA">
+        <key-map field-name="productFeatureId"/>
+      </view-link>
+    </view-entity>
+
+</entitymodel>
