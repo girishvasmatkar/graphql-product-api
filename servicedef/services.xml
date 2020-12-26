@@ -26,7 +26,7 @@ under the License.
    <service name="searchProductsByGoodIdentificationValue" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="searchProductsByGoodIdentificationValue" auth="true">
       <implements service="returnConnection"/>
       <attribute name="idFragment" type="String" mode="IN" optional="false" />
-      <attribute name="pagination" type="org.apache.ofbiz.graphql.schema.PaginationInputType" mode="IN" />
+      <!-- <attribute name="pagination" type="org.apache.ofbiz.graphql.schema.PaginationInputType" mode="IN" />  -->
    </service>
    <service name="searchProductsByName" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="searchProductsByName" auth="true">
       <description>Generates the complete XML structure around a particular product</description>
@@ -36,31 +36,31 @@ under the License.
    <service name="gql.createProduct" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="createProduct" auth="true" >
       <description>Generates the complete XML structure around a particular product</description>
     <!--  <auto-attributes mode="IN" entity-name="Product" optional="true"></auto-attributes>    -->
-    <implements service="createProduct"/> 
-    <attribute name="_graphql_result_" type="GenericValue" mode="OUT" optional="true" />   
-   </service>  
+    <implements service="createProduct"/>
+    <attribute name="_graphql_result_" type="GenericValue" mode="OUT" optional="true" />
+   </service>
    <service name="gql.createOrder" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="createOrder" auth="true" >
-    <description>Generates the complete XML structure around a particular product</description> 
+    <description>Generates the complete XML structure around a particular product</description>
     <implements service="storeOrder"/>
     <override name="orderAdjustments" type="List" mode="IN" optional="false" entity-name="OrderAdjustment"/>
     <override name="orderItems" entity-name="OrderItem" type="List" mode="IN"></override>
    </service>
    <service name="gql.productDetail" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="getProductDetail" auth="true" >
-    <description>Generates the complete XML structure around a particular product</description> 
+    <description>Generates the complete XML structure around a particular product</description>
     <attribute name="id" type="String" mode="IN" optional="false" />
-    <attribute name="_graphql_result_" type="Map" mode="OUT" optional="true" />      
-   </service>    
-   
-   
-   
+    <attribute name="_graphql_result_" type="Map" mode="OUT" optional="true" />
+   </service>
+
+
+
    <!-- Product API Start -->
-   
+
    <service name="productCreate" engine="java" transaction-timeout="7200" location="org.apache.ofbiz.graphql.product.services.GQLProductServices" invoke="getProductDetail" auth="true" >
-    <description>Generates the complete XML structure around a particular product</description> 
+    <description>Generates the complete XML structure around a particular product</description>
     <attribute name="id" type="String" mode="IN" optional="false" />
-    <attribute name="_graphql_result_" type="Map" mode="OUT" optional="true" />      
-   </service>   
-   
-   
-   
+    <attribute name="_graphql_result_" type="Map" mode="OUT" optional="true" />
+   </service>
+
+
+
 </services>
